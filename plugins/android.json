@@ -1,0 +1,171 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "undefined": {
+                "parents": {
+                    "undefined": [
+                        {
+                            "xml": "<access origin=\"*.pushapps.mobi\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "res/xml/config.xml": {
+                "parents": {
+                    "/widget": [
+                        {
+                            "xml": "<feature name=\"PushAppsPlugin\"><param name=\"android-package\" value=\"com.pushapps.phonegap.PushAppsPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ],
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Contacts\"><param name=\"android-package\" value=\"org.apache.cordova.contacts.ContactManager\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"*\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"loadUrlTimeoutValue\" value=\"180000\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"jsHybugger\"><param name=\"android-package\" value=\"org.jshybugger.cordova.JsHybuggerPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/manifest": [
+                        {
+                            "xml": "<permission android:name=\"com.chansky.polSV.permission.C2D_MESSAGE\" android:protectionLevel=\"signature\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.VIBRATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WAKE_LOCK\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"com.google.android.c2dm.permission.RECEIVE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"com.chansky.polSV.permission.C2D_MESSAGE\" />",
+                            "count": 1
+                        }
+                    ],
+                    "/manifest/application": [
+                        {
+                            "xml": "<receiver android:name=\"com.groboot.pushapps.GCMBroadcastReceiver\" android:permission=\"com.google.android.c2dm.permission.SEND\"><intent-filter><action android:name=\"com.google.android.c2dm.intent.RECEIVE\" /><action android:name=\"com.google.android.c2dm.intent.REGISTRATION\" /><category android:name=\"com.chansky.polSV\" /></intent-filter></receiver>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.groboot.pushapps.GCMBaseIntentServiceImpl\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:configChanges=\"orientation|keyboardHidden\" android:name=\"com.groboot.pushapps.PushActivity\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<provider android:authorities=\"com.chansky.polSV.jsHybugger\" android:enabled=\"true\" android:exported=\"false\" android:name=\"org.jshybugger.DebugContentProvider\"><meta-data android:name=\"debugPort\" android:value=\"8888\" /><meta-data android:name=\"releaseBuildDebugging\" android:value=\"true\" /><meta-data android:name=\"excludeFiles\" android:value=\"*.min.js,*/cordova.js\" /><meta-data android:name=\"excludeHosts\" android:value=\"*.google*.com,*.twitter.com,*.gstatic.com\" /><meta-data android:name=\"mimeTypesHtml\" android:value=\".html\" /><meta-data android:name=\"mimeTypesJavascript\" android:value=\".js\" /><meta-data android:name=\"proxyEnabled\" android:value=\"false\" /><meta-data android:name=\"proxyPort\" android:value=\"8080\" /><meta-data android:name=\"upstreamProxyEnabled\" android:value=\"false\" /><meta-data android:name=\"upstreamProxyHost\" android:value=\"192.168.178.1\" /><meta-data android:name=\"upstreamProxyPort\" android:value=\"8080\" /></provider>",
+                            "count": 1
+                        }
+                    ],
+                    "/manifest/application/activity": [
+                        {
+                            "xml": "<intent-filter><action android:name=\"com.chansky.polSV.MESSAGE\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter>",
+                            "count": 1
+                        }
+                    ],
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 3
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_CONTACTS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "com.pushapps.phonegap": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.apache.cordova.camera": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.apache.cordova.console": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.apache.cordova.contacts": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.apache.cordova.file": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.apache.cordova.file-transfer": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        },
+        "org.jshybugger.cordova": {
+            "PACKAGE_NAME": "com.chansky.polSV"
+        }
+    },
+    "dependent_plugins": {}
+}

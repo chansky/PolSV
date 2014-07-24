@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="ui-mobile-rendering">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- The Templates -->
+
+    <script type="text/template" id="home">
+
+
+
+            <div data-role="content">
+                    <h1 style="text-align:center"><strong>Pol</strong></h1>
+                <div class="center-wrapper">
+                    
+                    <a data-role="button"  href="#loginPage">Login</a>
+                    <a data-role="button" data-theme="c" href="#registerPage">Register</a>
+                </div>
+            </div>
+          
+        </div>
+        </div>
+
+    </script>
+
+    <script type="text/template" id="loginPage">
+
+            <div data-role="content" id="loginPageContent" style="height:100vh; width:100vw">
+            <h2 style="text-align:center"> Welcome back! </h2>
+                <form id="loginForm">
+
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="username"> Username: </label>
+                        <input type="text" name="username" id="username" value="" placeholder="Username"/>
+                    </div>
+
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="password"> Password: </label>
+                        <input type="password" name="password" id="password" value="" placeholder="Password"/>
+                    </div>
+
+                    <input type="submit" value="Login" id="submitButton" data-theme="b">
+                    
+                </form>
+            </div>
+            <!--End of login form-->
+            <div data-role="ForgotPasswordButton">
+                <input type="button" value="Forgot Password?" id="ForgotPasswordButton" onclick="ForgotPassword()">
+            </div> 
+        </div>
+
+    </script>
+
+    <script type="text/template" id="registerPage">
+        <div data-role="content" id="regPageContent">
+            <h2 style="text-align:center">Create an Account</h2>
+            <form id="registerForm">
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="gender">Gender:</label>
+                    <input type="text" name="gender" id="Reggender" value="" placeholder="gender"/>
+                </div>
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="age">Age:</label>
+                    <input type="text" name="age" id="Regage" value="" placeholder="age"/>
+                </div>
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="phonenumber">Phone Number:</label>
+                    <input type="text" name="phonenumber" id="Regphonenumber" value="" placeholder="Phone Number"/>
+                </div>
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" id="Regemail" value="" placeholder="Email"/>
+                </div>
+
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="username"> Username: </label>
+                    <input type="text" name="username" id="Regusername" value="" placeholder="Username"/>
+                </div>
+
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="password"> Password: </label>
+                    <input type="password" name="password" id="Regpassword" value="" placeholder="Password"/>
+                </div>
+                <input type="submit" value="Register" id="registerButton" data-theme="b">
+            </form>
+        </div>
+    </script>
+
+    <script type="text/template" id="contactsPage">
+          <div data-role="header">
+            <h1>Contacts</h1>
+          </div>
+          <div data-role = "content">
+                <div id = "frame"></div>
+                <a id="follow" data-role="button" onclick="follow()">Follow them!</a>
+                <a id="skip" data-role="button" onclick="skip()">Skip</a>
+          </div>    
+    </script>
+
+    <script type="text/template" id="createPoll">
+
+
+
+        <div data-role="content" id="createPollContent"  style="height:80vh">
+                        <form id="poll" data-theme="e">
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="question"> Question: </label>
+                        <input type="text" name="question" id="question" placeholder="Question"/>
+                    </div>
+                    <br>
+                    
+                    <ul id="options-list" data-role="listview">
+                    </ul>
+                    
+                    <br>
+                    <div data-role="controlgroup" data-inline="true">
+                        <input type="text" id="add-option-text" data-wrapper-class="controlgroup-textinput ui-btn" placeholder="Add Option?">
+                        
+                    </div>
+
+                    <input type="button" id="add-option-button"  value="Add" onclick="add_option_textFN();" width="20" />
+                    <input type="checkbox" name="checkbox-1" id="INSTABOX" class="custom" style="margin:15px"/>
+                    <label for="checkbox-1" style="color:black">INSTA</label>
+              </div>
+
+
+                    <select class="basic" id="timeOptions">
+                        <option value="">End The Poll in...</option>
+                        <option>1 Minute</option>
+                        <option>5 Minutes</option>
+                        <option>10 Minutes</option>
+                        <option>30 Minutes</option>
+                        <option>1 Hour</option>
+                        <option>1 Day</option>
+                        <option>1 Week</option>
+
+
+                    </select>
+  <input type="button" id="sendTo" value="Send To..." onclick="goToSendToPage();">
+                </form>
+        </div>
+
+
+
+      <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+      <div data-role="header">
+        <h1>Photo Menu</h1>
+      </div>
+
+      <div data-role="main" class="ui-content">
+ 
+    <button onclick="capturePhoto();">Capture Photo</button> <br>
+    <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
+    <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+    <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+
+      </div>
+
+      <div data-role="footer">
+        <h1>Footer Text</h1>
+      </div>
+    </div>
+            </div>
+        </div>
+
+    </script>
+
+
+
+<script type="text/template" id="sendToPage">
+  <div data-role="header">
+             <h1>Friends</h1>
+
+        </div>
+        <div data-role="content" id="contentStuff">
+          <div id = "sendToFrame"></div>
+          <a id="sendTo" data-role="button" onclick="send()"> Send!</a>
+          </div>
+</script>
+
+<script type="text/template" id="personalFeed">
+    <div data-role="content" id="personalFeedContent" style="height:100vh">
+        <ul id="feedList" data-role="listview"></ul>
+    </div>
+</script>
+
+<script type="text/template" id="chart">
+    <div data-role="main" class="ui-content" id="chartContent" style="height:100vh">
+        <div id="container" style="width: device-width; height: device-height; margin: 0 auto"></div>
+        <div id = "frame">
+            <fieldset data-role="controlgroup" id="myFieldset"></fieldset>
+        </div>
+    </div> 
+</script>
+
+<script type="text/template" id="settings">
+    <div data-role="content" id="settingsContent" style="height:100vh">
+            <h1 style="text-align:center">Settings</h1>
+        <div class="center-wrapper">
+            <a data-role="button" id="listFriendsBtn" data-theme="b" >My Friends</a>
+            <a data-role="button" id="searchFN" data-theme="b" >Add New Friends</a>
+            <a data-role="button" id="listInstasBtn" data-theme="b" >Notifications</a>
+            <a data-role="button" id="logOutBtn" data-theme="c">Log Out</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="listFriends">
+    <div data-role="header">
+         <h1>My Friends</h1>
+    </div>
+    <div data-role="content" id="listFriendsContent" style="height:100vh">
+      <div id = "listFriendsframe"></div>
+      <a id="remove" data-role="button" onclick="removeFn()"> Delete Friend</a>
+    </div>
+</script>
+
+<script type="text/template" id="instaPage">
+    <div data-role="header">
+         <h1>Choose who can send you notifications</h1>
+    </div>
+
+    <div data-role="content" id="InstaPageContent" style="height:100vh">
+        <!--<ul data-role="listview" data-autodividers="true" id="frame" data-filter="true"></ul>  -->
+      <div id = "frame"></div>
+      <a id="update" data-role="button" onclick="update()"> Update</a>
+    </div>
+</script>
+
+<script type="text/template" id="search">
+    <div data-role="header">
+         <h1>Search</h1>
+
+    </div>
+    <!-- /header -->
+    <div>
+        <input type="text" name="search" id="keyword" value="" placeholder = "Search Pol Database" />
+    </div>
+    <div data-role="content" id="searchContent" style="height:100vh">
+        <ul data-role="listview" id="frame"></ul>
+    </div>
+</script>
+
+    <!-- The Scripts -->
+    <script src="lib/jquery-1.9.1.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/backbone-min.js"></script>
+    <script src="lib/fastclick.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script> 
+    <script src="js/jqm-config.js"></script>
+    <script src="lib/jquery.mobile-1.4.2.min.js"></script>
+    <script src="lib/pageslider.js"></script>
+    <script type="text/javascript" src="js/jquery.touchwipe.1.1.1.js"></script>
+    <script type="text/javascript" src="js/TimeCircles.js"></script>
+    <script src="js/highcharts.js"></script>
+    <script src="js/highchartsexporting.js"></script>
+    <script type="text/javascript" src="js/jquery.countdown.js"></script>
+    <script src="js/main.js"></script>
+</head>
+
+<body>   
+
+
+  </body>
+
+</html>

@@ -1,0 +1,15 @@
+# view AndroidManifest.xml #generated:6
+-keep class com.chansky.polSV.PolSV { <init>(...); }
+
+# view AndroidManifest.xml #generated:23
+-keep class com.groboot.pushapps.GCMBaseIntentServiceImpl { <init>(...); }
+
+# view AndroidManifest.xml #generated:16
+-keep class com.groboot.pushapps.GCMBroadcastReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:24
+-keep class com.groboot.pushapps.PushActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:25
+-keep class org.jshybugger.DebugContentProvider { <init>(...); }
+
