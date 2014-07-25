@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>1730191C-C0D7-4FF1-B305-378B97545382</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PolSV</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>45629B2F-47E9-4280-AF03-549DFDE5927C</key>
+		<string>https://github.com/chansky/PolSV.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/PolSV.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>45629B2F-47E9-4280-AF03-549DFDE5927C</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/chansky/PolSV.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>45629B2F-47E9-4280-AF03-549DFDE5927C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>45629B2F-47E9-4280-AF03-549DFDE5927C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PolSV</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -246,22 +246,32 @@ $("#loginForm").on("submit", function(e){
     });
 
          $("#registerForm").on("submit",function(e){
+            //window.alert("register clicked");
+            console.log("register clicked");
         //$("$registerButton",this).attr("disabled","disabled");
         //document.write("inside register");
+        var w=windowWidth/2;
+        var h=windowHeight/2;
+        var loadIsh='<div id="loadIsh" style="width:'+w+'px;top:'+h+'px;"><img id="theLoadingPic" src="img/ajax-loader.gif"></div>';
+        $("#regPageContent").append(loadIsh);
+
         e.preventDefault();
-            var PUSHAPPS_APP_TOKEN="5ebcbd9a-8583-446e-81ee-f19e339fa88e";
-            var YOUR_GOOGLE_PROJECT_ID="75213574961";
-            var theToken;
-            var deviceID;
+//            var PUSHAPPS_APP_TOKEN="5ebcbd9a-8583-446e-81ee-f19e339fa88e";
+  //          var YOUR_GOOGLE_PROJECT_ID="75213574961";
+//            var theToken;
+  //          var deviceID;
             var g = $("#Reggender").val();
             var ph = $("#Regphonenumber").val();
             var em = $("#Regemail",this).val();
             var u = $("#Regusername",this).val();
             var p = $("#Regpassword",this).val();
             var a = $("#Regage",this).val();
+            registerHelper(g, ph, em, u, p, a);
+            //e.preventDefault();
+           // theRegisterPost(theToken, deviceID, g, ph, em, u, p, a);
            // window.alert("about to call register device");
             //e.preventDefault();
-PushNotification.registerDevice(YOUR_GOOGLE_PROJECT_ID, PUSHAPPS_APP_TOKEN, function (pushToken) {
+/*PushNotification.registerDevice(YOUR_GOOGLE_PROJECT_ID, PUSHAPPS_APP_TOKEN, function (pushToken) {
                                         //window.alert("My push token: " + pushToken);
                                         if(!theToken)
                                             theToken=pushToken;
@@ -273,15 +283,25 @@ PushNotification.registerDevice(YOUR_GOOGLE_PROJECT_ID, PUSHAPPS_APP_TOKEN, func
                                         window.alert(error);
                                     });
             //window.alert("called getToken function");
-                for(var i=0; i<10000; i++){
+                for(var i=0; i<100000; i++){
                     //do nothing
+                    if(i==99999)
+                        console.log("finished first round of doing nothing");
                 }
 PushNotification.getDeviceId(function (deviceId) {
                                        // window.alert("Your device ID: " + deviceId);
+                                    if(theToken){
                                         if(!deviceID)
                                             deviceID=deviceId;
                                         e.preventDefault();
                                         theRegisterPost(theToken, deviceID, g, ph, em, u, p, a);
+                                    }
+                                    else{
+                                        console.log("token still not set");
+                                        setTimeout(function(){
+                                           PushNotification.getDeviceId(function (deviceId)); 
+                                        }, 1000);
+                                    }
                                     },
                                     function (error) {
                                         window.alert(error);
@@ -289,7 +309,9 @@ PushNotification.getDeviceId(function (deviceId) {
 //window.alert("called device ID fn");
                 for(var i=0; i<10000; i++){
                     //do nothing
-                }
+                    if(i==9999)
+                        console.log("finished second round of doing nothing");
+                }*/
 /*document.addEventListener('pushapps.message-received', function(event) {
                                 var notification = event.notification;
                                 // This is the entire object, just take the wanted propertey
@@ -331,7 +353,7 @@ PushNotification.getDeviceId(function (deviceId) {
             var usernames = [];
             var fullnames = []; 
              $.post("https://web.engr.illinois.edu/~chansky2/findContacts.php",{phonenumbers:pnums},function(res){
-                //window.alert(res);
+               // window.alert(res);
                 var obj = jQuery.parseJSON(res);
                 //window.alert(obj);
                 for(var i=0; i<obj.length; i++){
@@ -455,6 +477,7 @@ PushNotification.getDeviceId(function (deviceId) {
 
         });
         $("#sendTo").on("tap",function(e){
+            console.log("# options being sent: "+options.length);
          e.preventDefault();
         });
         $('#options-list').delegate('li', 'vclick', function() {
@@ -1000,7 +1023,8 @@ PushNotification.getDeviceId(function (deviceId) {
                     if(jQuery.inArray(username, selected)==-1)
                         selected.push(username);
                     $.post("https://web.engr.illinois.edu/~chansky2/followContacts.php",{type:"follow", usernames:selected},function(res){
-                        window.alert("Added: "+username);
+                        //window.alert(res);
+                       // window.alert("Added: "+username);
                     });
                     $.post("https://web.engr.illinois.edu/~chansky2/addInsta.php",{type:"add", usernames:selected},function(res){
                        window.location.hash = "settings";
@@ -1051,7 +1075,10 @@ document.addEventListener("deviceready",onDeviceReady,false);
          windowWidth = window.innerWidth;
          windowHeight = window.innerHeight;
          console.log("screen width is: "+windowWidth+", height is: "+windowHeight);
-
+         deviceID=-1;
+         theToken=-1;
+         PUSHAPPS_APP_TOKEN="5ebcbd9a-8583-446e-81ee-f19e339fa88e";
+         YOUR_GOOGLE_PROJECT_ID="75213574961";
        // console.log("destination type is: "+destinationType);
     }
 
@@ -1316,10 +1343,10 @@ function removeFn(){
   });
   $.post("https://web.engr.illinois.edu/~chansky2/followContacts.php",{type:"unfollow", usernames:selected},function(res){
     //location.reload();
+   // window.alert(res);
     window.alert("unfollowing");
   });
   $.post("https://web.engr.illinois.edu/~chansky2/addInsta.php",{type:"remove", usernames:selected},function(res){
-    //window.alert(res);
     //window.alert(res);
    window.location.hash = "settings";
  });
@@ -1334,6 +1361,8 @@ function update(){
   });
   $.post("https://web.engr.illinois.edu/~chansky2/addInsta.php",{type:"reFollow", usernames:selected},function(res){
     //location.reload();
+    //window.alert("called add insta with reFollow");
+    //window.alert(res);
   });
   $('#instaCheckboxes input:checkbox:not(:checked)').each(function() {
       notSelected.push($(this).attr('name'));
@@ -1341,8 +1370,8 @@ function update(){
   });
   $.post("https://web.engr.illinois.edu/~chansky2/addInsta.php",{type:"unfollow", usernames:notSelected},function(res){
     //location.reload();
-    window.alert("called the unfollow php file");
-    window.alert(res);
+    //window.alert("called addInsta with unfollow");
+    //window.alert(res);
   });
   window.alert("changes made");
   window.location.hash="settings";
@@ -1418,6 +1447,46 @@ function update(){
 
 
 
+function registerHelper(g, ph, em, u, p, a){
+    console.log("in register helper");
+    console.log("theToken is: "+theToken);
+    if((theToken==-1)||(deviceID==-1)){
+        console.log("something still equals negative one");
+            PushNotification.registerDevice(YOUR_GOOGLE_PROJECT_ID, PUSHAPPS_APP_TOKEN, function (pushToken) {
+                                                //window.alert("My push token: " + pushToken);
+                                                if(theToken==-1)
+                                                    theToken=pushToken;
+                                                //e.preventDefault();
+                                               // theRegisterPost(theToken, deviceID, g, ph, em, u, p, a);
+                                            },
+                                            function (error) {
+                                                window.alert("error call back about to follow");
+                                                window.alert(error);
+                                            });
+
+        PushNotification.getDeviceId(function (deviceId) {
+                                               // window.alert("Your device ID: " + deviceId);
+                                                if(deviceID==-1)
+                                                    deviceID=deviceId;
+                                                //e.preventDefault();
+                                            },
+                                            function (error) {
+                                                window.alert(error);
+                                            });
+
+    //}
+    //else{
+        console.log("one of the values was not set");
+        setTimeout(function(){
+            registerHelper(g, ph, em, u, p, a);
+        }, 3000);
+    }
+    else{
+        theRegisterPost(theToken, deviceID, g, ph, em, u, p, a);
+        //its now safe to call theRegisterPost
+    }
+}
+
 
 
 
@@ -1427,8 +1496,8 @@ function update(){
 
 
         function theRegisterPost(theToken, deviceID, g, ph, em, u, p, a){
-            //window.alert("the values are: theToken-"+theToken+"\n deviceID-"+deviceID+"\n username-"+u);
-            if(theToken!=undefined&&deviceID!=undefined){
+            console.log("the values are: theToken-"+theToken+"\n deviceID-"+deviceID+"\n username-"+u);
+            if(theToken!=-1&&deviceID!=-1){
                // window.alert("about to do the deviceType stuff");
                 var devicePlatform = device.platform;
              //   window.alert("device is: "+devicePlatform);
@@ -1448,11 +1517,24 @@ function update(){
                  //   window.alert("the token being sent is: "+theToken);
                    // window.alert("the device id being sent is: "+deviceID);
                     $.post("https://web.engr.illinois.edu/~chansky2/register.php",{gender:g,phonenumber:ph,email:em,username:u,password:p,age:a,token:theToken,deviceID:deviceID,deviceType:deviceType},function(res){
+                   // window.alert(res);
+                        console.log("res at 0: "+res[0]+" ,res at 1: "+res[1]+ ", res at 2: "+res[2]);
+                        if(res[2]=='t'){
+                            console.log("inside the res==t");
+                                                    window.location.hash ="contactsPage";
+
+                        }
+                        console.log("return vals from register call: "+res);
+
                     }); 
+                    for(var i=0; i<20000; i++){
+                        //do nothing
+                        if(i==19999)
+                            console.log("finished third round of doing nothing");
+                    }
                     //window.alert(res);
                     //window.alert("outside of post");
                     console.log("outside of post");
-                                                    window.location.hash ="contactsPage";
 
                 }
                 else{
@@ -1461,6 +1543,12 @@ function update(){
                     //navigator.notification.alert("field empty",function(){});
                 }
             }
+         /*   else{
+                console.log("checking again");
+                setTimeout(function(){
+                    theRegisterPost(theToken, deviceID, g, ph, em, u, p, a);
+                },4000);
+            }*/
         //return;
         }
 
