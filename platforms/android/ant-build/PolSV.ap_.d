@@ -125,6 +125,7 @@
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/img/tempLogo.png \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/img/Welcome.png \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/bootstrap.min.js \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/hammer.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/highcharts.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/highchartsexporting.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/highchartsOriginalVersion.js \

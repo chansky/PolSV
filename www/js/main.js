@@ -155,8 +155,16 @@ var AppRouter = Backbone.Router.extend({
         console.log('#loginPage');
         this.changePage(new loginPageView());   
 
-
-        $("#loginPageContent").touchwipe({
+        var shit= document.getElementById("loginPageContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            console.log("right");
+            window.location.hash="";
+        });
+     /*   $("#loginPageContent").touchwipe({
              wipeLeft: function() {
                 console.log("left"); 
                 },
@@ -173,7 +181,7 @@ var AppRouter = Backbone.Router.extend({
              min_move_x: 20,
              min_move_y: 20,
              preventDefaultEvents: false
-    });
+    });  */
 
 
 //i put all this login form function stuff
@@ -226,7 +234,16 @@ $("#loginForm").on("submit", function(e){
         this.changePage(new registerPageView());   
        // register();
 
-        $("#regPageContent").touchwipe({
+        var shit= document.getElementById("regPageContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            console.log("right");
+            window.location.hash="";
+        });
+     /*   $("#regPageContent").touchwipe({
              wipeLeft: function() {
                 console.log("left"); 
                 },
@@ -243,7 +260,7 @@ $("#loginForm").on("submit", function(e){
              min_move_x: 20,
              min_move_y: 20,
              preventDefaultEvents: false
-    });
+    }); */
 
          $("#registerForm").on("submit",function(e){
             //window.alert("register clicked");
@@ -404,7 +421,16 @@ PushNotification.getDeviceId(function (deviceId) {
 
         }); */
 
-        $("#createPollContent").touchwipe({
+            var shit= document.getElementById("createPollContent");
+            var hammertime = new Hammer(shit);
+
+            hammertime.on("swiperight", function(){
+                window.location.hash="personalFeed";
+            });
+            hammertime.on("swipeleft", function(){
+                window.location.hash="settings";
+            });
+      /*  $("#createPollContent").touchwipe({
             //i have a choice here as to whether or not i want to save the user's unpublished poll 
             //upon a swipe...for now im not
              wipeLeft: function() {
@@ -430,7 +456,7 @@ PushNotification.getDeviceId(function (deviceId) {
              min_move_x: 20,
              min_move_y: 20,
              preventDefaultEvents: false
-    });
+    });  */
             $("#add-option-button").on("tap", function(){
 
             //e.preventDefault();
@@ -489,26 +515,17 @@ PushNotification.getDeviceId(function (deviceId) {
     sendToPage:function(page){
         console.log('#sendToPage');
         this.changePage(new sendToView());  //inserts the view into the dom
+        var shit= document.getElementById("contentStuff");
 
-        $("#contentStuff").touchwipe({
-             wipeLeft: function() {
+        hammertime.on('swipeleft', function(ev) {
                 console.log("left"); 
                 window.location.hash = "createPoll";
-                },
-             wipeRight: function() { 
+        });
+        hammertime.on("swiperight", function(ev){
                 console.log("right");
                 window.location.hash = "createPoll";
-                },
-             wipeUp: function() { 
-                console.log("up"); 
-            },
-             wipeDown: function() { 
-               console.log("down"); 
-             },
-             min_move_x: 20,
-             min_move_y: 20,
-             preventDefaultEvents: false
         });
+
 
         var contacts = [];
         var fullNames= [];
@@ -545,8 +562,24 @@ PushNotification.getDeviceId(function (deviceId) {
             dataLength=usernames.length;
             displayFeed();
         }
-
-        $("#personalFeedContent").touchwipe({
+        var shit= document.getElementById("personalFeedContent");
+        var hammertime = new Hammer(shit);
+        hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+        hammertime.on('swipeleft', function(ev) {
+          console.log("left"); 
+          window.location.hash = "createPoll";
+        });
+        hammertime.on("swiperight", function(ev){
+            console.log("right");
+        });
+        hammertime.on("swipedown", function(ev){
+            console.log("up"); 
+            //feedVisited=0;
+            $('#feedList').empty();
+            resetFeedArrays();
+            getFeedData();
+        });
+      /*  $("#personalFeedContent").touchwipe({
          wipeLeft: function() {
           console.log("left"); 
           window.location.hash = "createPoll";
@@ -567,7 +600,7 @@ PushNotification.getDeviceId(function (deviceId) {
          min_move_x: 20,
          min_move_y: 20,
          preventDefaultEvents: false
-        });
+        }); */
 
         $('#feedList').delegate('li', 'vclick', function() {
             var index = $(this).index();
@@ -638,7 +671,16 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#chartView');
         this.changePage(new chartView());
 
-        $("#chartContent").touchwipe({
+        var shit= document.getElementById("chartContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            console.log("right");
+            window.location.hash="personalFeed";
+        });
+       /* $("#chartContent").touchwipe({
             wipeLeft: function() {
             console.log("left"); 
             },
@@ -649,7 +691,7 @@ PushNotification.getDeviceId(function (deviceId) {
             min_move_x: 20,
             min_move_y: 20,
             preventDefaultEvents: true
-        });
+        }); */
         var Over=0;
         var GenerateChart=0;
         var index=(localStorage.getItem("selectedIndex"));
@@ -890,7 +932,17 @@ PushNotification.getDeviceId(function (deviceId) {
     settings:function(page){
         console.log('#settingsView');
         this.changePage(new settingsView());
-        $("#settingsContent").touchwipe({
+
+        var shit= document.getElementById("settingsContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log(ev);
+        });
+        hammertime.on("swiperight", function(ev){
+            window.location.hash="createPoll";
+        });
+
+       /* $("#settingsContent").touchwipe({
             wipeLeft: function() {
                 console.log("left"); 
             },
@@ -901,7 +953,7 @@ PushNotification.getDeviceId(function (deviceId) {
             min_move_x: 20,
             min_move_y: 20,
             preventDefaultEvents: true  
-        });
+        }); */
         $("#listFriendsBtn").on("tap",function(e){
                     window.location.hash="listFriends";
         });
@@ -922,7 +974,17 @@ PushNotification.getDeviceId(function (deviceId) {
     listFriends:function(page){
         console.log('#listFriendsView');
         this.changePage(new listFriendsView());
-        $("#listFriendsContent").touchwipe({
+
+        var shit= document.getElementById("listFriendsContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            console.log("right");
+            window.location.hash = "settings";
+        });
+/*        $("#listFriendsContent").touchwipe({
                  wipeLeft: function() {
                     },
                  wipeRight: function() { 
@@ -932,13 +994,13 @@ PushNotification.getDeviceId(function (deviceId) {
                  min_move_x: 20,
                  min_move_y: 20,
                  preventDefaultEvents: false
-        });
+        });*/
         var contacts = new Array();
                     $("#listFriendsframe").html('<fieldset id="listFriendsCheckboxes" data-role="controlgroup"><legend>Check box to remove friend</legend></fieldset>');
 
         $.get("https://web.engr.illinois.edu/~chansky2/getFriends.php", function(data){
 //                                $("#listFriendsframe").trigger("create");
-
+            console.log(data);
             var obj = jQuery.parseJSON(data);
             for(var i=0; i<obj.length; i++){
                 if(jQuery.inArray(obj[i].username, contacts)==-1)
@@ -956,7 +1018,17 @@ PushNotification.getDeviceId(function (deviceId) {
     instaPage:function(page){
         console.log('#listInstasView');
         this.changePage(new listInstasView());
-        $("#InstaPageContent").touchwipe({
+
+        var shit= document.getElementById("InstaPageContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            window.location.hash="settings";
+        });
+
+      /*  $("#InstaPageContent").touchwipe({
              wipeLeft: function() {
                 },
              wipeRight: function() { 
@@ -966,7 +1038,7 @@ PushNotification.getDeviceId(function (deviceId) {
              min_move_x: 20,
              min_move_y: 20,
              preventDefaultEvents: false
-        });
+        }); */
         var contacts = new Array();
         $.get("https://web.engr.illinois.edu/~chansky2/getInstas.php", function(data){
             var obj = jQuery.parseJSON(data);
@@ -989,7 +1061,15 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#searchView');
         this.changePage(new searchView());
         var selected = [];
-        $("#searchContent").touchwipe({
+        var shit= document.getElementById("searchContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            window.location.hash="settings";
+        });
+       /* $("#searchContent").touchwipe({
              wipeRight: function() { 
              // window.alert("right"); 
                 window.location.hash = "settings";
@@ -997,7 +1077,7 @@ PushNotification.getDeviceId(function (deviceId) {
              min_move_x: 20,
              min_move_y: 20,
              preventDefaultEvents: false
-        });
+        }); */
         $('#keyword').keyup(function () {
             $("#frame").empty()
             var name = $('#keyword').val();
