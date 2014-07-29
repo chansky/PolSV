@@ -110,6 +110,7 @@
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/bootstrap.min.css \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/jquery.mobile-1.0.1.min.css \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/TimeCircles.css \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images/ajax-loader.png \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images/icons-18-black.png \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images/icons-18-white.png \
@@ -133,7 +134,9 @@
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/jquery.countdown.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/jquery.touchwipe.1.1.1.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/main.js \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/originalDisplayFeed.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/TimeCircles.js \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/js/TimeCirclesNoMod.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/lib/backbone-min.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/lib/fastclick.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/lib/jquery-1.9.1.min.js \

@@ -426,9 +426,11 @@ PushNotification.getDeviceId(function (deviceId) {
             hammertime.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
         //hammertime.defaults.behavior.touchAction = 'pan-y';
             hammertime.on("swiperight", function(){
+                console.log("right");
                 window.location.hash="personalFeed";
             });
             hammertime.on("swipeleft", function(){
+                console.log("left");
                 window.location.hash="settings";
             });
             /*
@@ -585,6 +587,12 @@ PushNotification.getDeviceId(function (deviceId) {
     personalFeed:function(page){
         console.log('#personalFeed');
         this.changePage(new personalFeedView());
+
+     /*     console.log("dataLength is: "+dataLength);
+          for(var i=0; i<dataLength; i++){
+            var input="."+i;
+            $(input).TimeCircles().start();
+          }  */
         var usernames=[];
         var PID=[];
         var dataLength=0;
@@ -606,6 +614,13 @@ PushNotification.getDeviceId(function (deviceId) {
         specialHam.get('swipe').set({ direction: Hammer.DIRECTION_ALL });  //how does this affect other hammers?
         specialHam.on('swipeleft', function() {
           console.log("left"); 
+          //attempt to pause the animations:
+          console.log("Stopping timeCircles and dataLength is: "+dataLength);
+          for(var i=0; i<dataLength; i++){
+            var input="."+i;
+            $(input).TimeCircles().stop();
+          }
+
           window.location.hash = "createPoll";
         });
         specialHam.on("swiperight", function(){
@@ -645,6 +660,11 @@ PushNotification.getDeviceId(function (deviceId) {
             var index = $(this).index();
             var selectedIndex="selectedIndex";
             window.localStorage.setItem(selectedIndex, $(this).index());  //i added this semi colon july 9th
+           console.log("Stopping timeCirlces and dataLength is: "+dataLength);
+          for(var i=0; i<dataLength; i++){
+            var input="."+i;
+            $(input).TimeCircles().stop();
+          }
             window.location.hash="chart";
         });
 
@@ -680,22 +700,47 @@ PushNotification.getDeviceId(function (deviceId) {
         }
 
         function displayFeed(){
+            console.log("displayFeed called");
             for (var j = 0; j < dataLength; j++) {   //not sure why this needs to be in the get
-                var generic="display:inline-block; height:18%; margin:10px";
-                var clock="display:inline-block; width:18%; height:18%; margin:5px";
-                var phrase='<li><a><div class="'+j+'", data-timer="'+endtime[j]+'", style="'+clock+'"></div><h2 style="'+generic+'">'+usernames[j]+'</h2><p style="'+generic+'">'+endtime[j]+' seconds remaining...</p></a></li>';
+                //var generic="display:inline-block; height:18%; margin:10px";
+                var clock="display:inline-block; width:100%; height:20%;";
+                var helperText="'s poll ends in: ";
+                var phrase='<li><a><h2>'+usernames[j]+helperText+'</h2><div class="'+j+'", data-date="'+endtime[j]+'", style="'+clock+'"></div></a></li>';
                 $('#feedList').append(phrase).listview('refresh');
                 //add the time circle for each row:
+                //console.log("endtime for item "+j+", is: "+endtime[j]);
                 var input="."+j;
-                $(input).TimeCircles({ use_background: false, fg_width: .395 , bg_width: 1.0, count_past_zero: false, time: {
-                    Days: { show: false},
-                    Hours: { show: false},
-                    Minutes: { show:false},
-                    Seconds: { color: "#F99", text:""}
+                $(input).TimeCircles({ "animation": "smooth",
+    "bg_width": 1.2,
+    "fg_width": 0.1,
+    "circle_bg_color": "#60686F", "count_past_zero": false, "time": {
+"Days": {
+            "text": "Days",
+            "color": "#FFCC66",
+            "show": true
+        },
+        "Hours": {
+            "text": "Hours",
+            "color": "#99CCFF",
+            "show": true
+        },
+        "Minutes": {
+            "text": "Minutes",
+            "color": "#BBFFBB",
+            "show": true
+        },
+        "Seconds": {
+            "text": "Seconds",
+            "color": "#FF9999",
+            "show": true
+        }
                 }});
-                $(input).TimeCircles({total_duration: "Minutes"}).rebuild();
-                $('#feedList').listview('refresh');
+                //$(input).TimeCircles({total_duration: "Minutes"}).rebuild();
+
             }
+                            $('#feedList').trigger('create');
+
+                $('#feedList').listview('refresh');
         }
 
         function resetFeedArrays(){
@@ -704,6 +749,7 @@ PushNotification.getDeviceId(function (deviceId) {
             dataLength=0;
             endtime=[];
         }
+        
     },
 
     chart:function(page){
@@ -1251,18 +1297,16 @@ document.addEventListener("deviceready",onDeviceReady,false);
     }
     function capturePhoto() {
       navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-        destinationType: destinationType.FILE_URI, correctOrientation: true});  //recently added correctOrientation: true
+        destinationType: destinationType.FILE_URI});  //recently added correctOrientation: true , except it breaks android upload...
     }
     function capturePhotoEdit() {
       navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-        destinationType: destinationType.FILE_URI,
-        correctOrientation: true});
+        destinationType: destinationType.FILE_URI});
     }
     function getPhoto(source) {
       navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, 
         destinationType: destinationType.FILE_URI,
-        sourceType: source,
-        correctOrientation: true});
+        sourceType: source});
     }
     function onFail(message) {
       alert('Failed because: ' + message);
