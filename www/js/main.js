@@ -1,4 +1,4 @@
-    var optionCounter=0; var uniquePhotoCount=0;var photos = []; var WickedIndex;  var options = [];
+    var optionCounter=0; var uniquePhotoCount=0; var photos = []; var WickedIndex;  var options = [];
     var tImgID;
     var pictureSource;   // picture source
     var destinationType; // sets the format of returned value
@@ -512,7 +512,24 @@ PushNotification.getDeviceId(function (deviceId) {
            // optionCounter--;  //this is bad because it leads to li's with the same id
             console.log("options size after removal: "+options.length+" and optionCounter is: "+optionCounter);
             console.log("photos length is: "+photos.legnth+", and uniquePhotoCount is: "+uniquePhotoCount);
-            if(removalIndex<=uniquePhotoCount){  //REVIEW
+            var i=0;
+            var helperFlag=0;
+            for(var x in photos){
+                    if(photos.hasOwnProperty(x)){
+                        if(i==trueRemovalIndex)
+                            helperFlag=1;
+                        i++;
+                    }
+            }
+            console.log("the length of photos pre-remove is: "+i);
+            if(helperFlag==1){
+                photos.splice(trueRemovalIndex, 1);
+                //delete photos[trueRemovalIndex];
+                uniquePhotoCount--;
+                console.log("new length of photos is: "+photos.length);
+            }
+
+           /* if(removalIndex<=uniquePhotoCount){  //REVIEW
                 if(photos.length>0){
                     console.log("length of photos is: "+photos.length);
                     console.log("removal index was less than uniquePhotoCount which was: "+uniquePhotoCount);
@@ -520,7 +537,7 @@ PushNotification.getDeviceId(function (deviceId) {
                     console.log("new length of photos is: "+photos.length);
                     uniquePhotoCount--;
                 }
-            }
+            } */
            $(this).parent().parent().parent().parent().remove();
 
         });
@@ -1391,6 +1408,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
             //window.alert("res: "+res);
             console.log("the output of the call to addPollI: "+res);
             var retVal=parseInt(res);
+            console.log("ret val is: "+retVal);
             uploadStuff(retVal, photos);
             localStorage.removeItem("allPollInfo");
             window.location.hash="createPoll";
@@ -1407,16 +1425,18 @@ document.addEventListener("deviceready",onDeviceReady,false);
         if(image==1){
             for(var i=0; i<photos.length; i++){  
                 fileName=photos[i];
-                var options = new FileUploadOptions();
-                options.fileKey="file";
-                options.fileName=num+".jpg";
-                console.log("pic file name: "+options.fileName);
-                options.mimeType="image/jpg";
-                options.chunkedMode=false;
+                var uploadOptions = new FileUploadOptions();
+                uploadOptions.fileKey="file";
+                uploadOptions.fileName=num+".jpg";  //look at num
+                console.log("pic file name: "+uploadOptions.fileName);
+                uploadOptions.mimeType="image/jpg";
+                uploadOptions.chunkedMode=false;
+             //   uploadOptions.chunkedMode = true;  //new
+                uploadOptions.headers = {Connection: "close"}; //new, this really helped android upload!
                 var params = new Object();
-                options.params = params;
+                uploadOptions.params = params;
                 var ft = new FileTransfer();
-                ft.upload(fileName, encodeURI("https://web.engr.illinois.edu/~chansky2/uploadFile.php"), win, fail, options, true);
+                ft.upload(fileName, encodeURI("https://web.engr.illinois.edu/~chansky2/uploadFile.php"), win, fail, uploadOptions, true);
                 num++;
             }
         }
