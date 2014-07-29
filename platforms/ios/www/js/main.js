@@ -348,11 +348,11 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#contactsPageView');
         this.changePage(new contactsPageView()); 
 
-        var options = new ContactFindOptions();
-        options.filter = "";
-        options.multiple = true;
+        var contactOptions = new ContactFindOptions();   //this used to be var options =... but i changed it
+        contactOptions.filter = "";
+        contactOptions.multiple = true;
         var fields = ["displayName","phoneNumbers"];
-        navigator.contacts.find(fields, onSuccess, onError, options);      
+        navigator.contacts.find(fields, onSuccess, onError, contactOptions);      
         var loaded = false;
         var pnums = [];  
 
@@ -395,7 +395,7 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#createPoll');
        // window.alert("in create poll function");
         this.changePage(new createPollView());  //inserts the view into the dom
-
+        options=[]; photos=[]; //hopefully this doesn't screw things up, added 7-28-14
      /*   $(document).on("tap", "#add-option-button", function(e){
             e.preventDefault();
             window.alert("Adding option");
@@ -420,16 +420,27 @@ PushNotification.getDeviceId(function (deviceId) {
               optionCounter++;
 
         }); */
-
+    //do your stuff
             var shit= document.getElementById("createPollContent");
             var hammertime = new Hammer(shit);
-
+            hammertime.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
+        //hammertime.defaults.behavior.touchAction = 'pan-y';
             hammertime.on("swiperight", function(){
                 window.location.hash="personalFeed";
             });
             hammertime.on("swipeleft", function(){
                 window.location.hash="settings";
             });
+            /*
+            hammertime.on("swipedown", function(e){
+                  //  e.preventDefault();
+                    console.log("swiped down");
+            });
+            hammertime.on("swipeup", function(e){
+                //e.preventDefault();
+                console.log("swiped up");
+            });   */
+
       /*  $("#createPollContent").touchwipe({
             //i have a choice here as to whether or not i want to save the user's unpublished poll 
             //upon a swipe...for now im not
@@ -477,25 +488,36 @@ PushNotification.getDeviceId(function (deviceId) {
                 optionCounter++;
             }
             else{
-                navigator.notification.alert("Nothing to add!",function(){});
+                window.alert("Nothing to add!",function(){});
             }
             $("#createPoll").trigger("create");
 
         });
         $('#options-list').on('click', '#remove-option-button', function(event) {
-            window.alert("remove clicked on");
+            console.log("remove clicked on");
             tImgID="tmppic"+(optionCounter);  //used to be -1
             event.preventDefault();
             var removalIndex=$(this).parent().parent().parent().parent().attr('id');
-            console.log("removing: "+removalIndex+", and optionCounter is: "+optionCounter);
+            console.log("removing (aka removal index): "+removalIndex+", and optionCounter is: "+optionCounter);
             console.log("options size before remove: "+options.length);
-            options.splice(removalIndex, 1);  //actually removes the option from the options array
+            //im thinking if i add a for loop to go through the options array and find the option with the 
+            //matching id then thats my true removal index!
+            var trueRemovalIndex=-1;
+            for(var i=0; i<options.length; i++){
+                if(options[i].counterNum==removalIndex)
+                    trueRemovalIndex=i;
+            }
+            console.log("true removal index is: "+trueRemovalIndex);
+            options.splice(trueRemovalIndex, 1);  //actually removes the option from the options array
            // optionCounter--;  //this is bad because it leads to li's with the same id
             console.log("options size after removal: "+options.length+" and optionCounter is: "+optionCounter);
+            console.log("photos length is: "+photos.legnth+", and uniquePhotoCount is: "+uniquePhotoCount);
             if(removalIndex<=uniquePhotoCount){  //REVIEW
                 if(photos.length>0){
+                    console.log("length of photos is: "+photos.length);
                     console.log("removal index was less than uniquePhotoCount which was: "+uniquePhotoCount);
                     photos.splice(removalIndex, 1);
+                    console.log("new length of photos is: "+photos.length);
                     uniquePhotoCount--;
                 }
             }
@@ -507,7 +529,7 @@ PushNotification.getDeviceId(function (deviceId) {
          e.preventDefault();
         });
         $('#options-list').delegate('li', 'vclick', function() {
-            window.alert("the list item clicked was: "+this.id);
+            console.log("the list item clicked was: "+this.id);
             WickedIndex = this.id;
          });
     },
@@ -516,7 +538,7 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#sendToPage');
         this.changePage(new sendToView());  //inserts the view into the dom
         var shit= document.getElementById("contentStuff");
-
+        var hammertime = new Hammer(shit);
         hammertime.on('swipeleft', function(ev) {
                 console.log("left"); 
                 window.location.hash = "createPoll";
@@ -562,23 +584,23 @@ PushNotification.getDeviceId(function (deviceId) {
             dataLength=usernames.length;
             displayFeed();
         }
-        var shit= document.getElementById("personalFeedContent");
-        var hammertime = new Hammer(shit);
-        hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-        hammertime.on('swipeleft', function(ev) {
+        var shippar= document.getElementById("personalFeedContent");
+        var specialHam = new Hammer(shippar);
+        specialHam.get('swipe').set({ direction: Hammer.DIRECTION_ALL });  //how does this affect other hammers?
+        specialHam.on('swipeleft', function() {
           console.log("left"); 
           window.location.hash = "createPoll";
         });
-        hammertime.on("swiperight", function(ev){
+        specialHam.on("swiperight", function(){
             console.log("right");
         });
-        hammertime.on("swipedown", function(ev){
+        specialHam.on("swipedown", function(){   //need this
             console.log("up"); 
             //feedVisited=0;
             $('#feedList').empty();
             resetFeedArrays();
             getFeedData();
-        });
+        });  
       /*  $("#personalFeedContent").touchwipe({
          wipeLeft: function() {
           console.log("left"); 
@@ -671,15 +693,20 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#chartView');
         this.changePage(new chartView());
 
+    //do your stuff
         var shit= document.getElementById("chartContent");
         var hammertime = new Hammer(shit);
-        hammertime.on('swipeleft', function(ev) {
+        hammertime.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
+       // hammertime.defaults.behavior.touchAction = 'pan-y';
+        hammertime.on('swipeleft', function() {
             console.log("left");
         });
-        hammertime.on("swiperight", function(ev){
+        hammertime.on("swiperight", function(){
             console.log("right");
             window.location.hash="personalFeed";
         });
+      
+    
        /* $("#chartContent").touchwipe({
             wipeLeft: function() {
             console.log("left"); 
@@ -1183,6 +1210,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
             if (options[i].counterNum==WickedIndex)
                 oIndex=i;
         }
+        console.log("oIndex is: "+ oIndex+", and WickedIndex is: "+WickedIndex);
         options[oIndex].containsImg=1;
         smallImage= document.getElementById(currID);
         console.log("the image that was clicked on: "+smallImage);
@@ -1194,6 +1222,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
                 uniquePhotoCount++;
                 photos.push(smallImage.src); //adds photo to photo array
                 console.log("added one photo");
+                console.log("photos length immdediately following add: "+photos.length);
         }
         else{  //we're replacing an image that was already taken so need to update the photos array
             var index=photos.indexOf(smallImage.src);
@@ -1218,6 +1247,10 @@ document.addEventListener("deviceready",onDeviceReady,false);
     }
     function onFail(message) {
       alert('Failed because: ' + message);
+    }
+
+    function exitMenu(){
+        console.log("exiting photo menu");
     }
 
     function add_option_textFN(){
@@ -1631,5 +1664,9 @@ function registerHelper(g, ph, em, u, p, a){
             }*/
         //return;
         }
+
+
+
+
 
 
