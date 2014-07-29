@@ -629,6 +629,11 @@ PushNotification.getDeviceId(function (deviceId) {
         specialHam.on("swipedown", function(){   //need this
             console.log("up"); 
             //feedVisited=0;
+                      console.log("Stopping timeCircles and dataLength is: "+dataLength);
+          for(var i=0; i<dataLength; i++){
+            var input="."+i;
+            $(input).TimeCircles().stop();
+          }
             $('#feedList').empty();
             resetFeedArrays();
             getFeedData();
