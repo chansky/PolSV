@@ -1251,16 +1251,16 @@ document.addEventListener("deviceready",onDeviceReady,false);
     }
     function capturePhoto() {
       navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-        destinationType: destinationType.FILE_URI });
+        destinationType: destinationType.FILE_URI});  //recently added correctOrientation: true , except it breaks android upload...
     }
     function capturePhotoEdit() {
       navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-        destinationType: destinationType.FILE_URI });
+        destinationType: destinationType.FILE_URI});
     }
     function getPhoto(source) {
       navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, 
         destinationType: destinationType.FILE_URI,
-        sourceType: source });
+        sourceType: source});
     }
     function onFail(message) {
       alert('Failed because: ' + message);
@@ -1431,8 +1431,9 @@ document.addEventListener("deviceready",onDeviceReady,false);
                 console.log("pic file name: "+uploadOptions.fileName);
                 uploadOptions.mimeType="image/jpg";
                 uploadOptions.chunkedMode=false;
+                //uploadOptions.correctOrientation= true;  //this didn't do anything
              //   uploadOptions.chunkedMode = true;  //new
-                uploadOptions.headers = {Connection: "close"}; //new
+                uploadOptions.headers = {Connection: "close"}; //new, this really helped android upload!
                 var params = new Object();
                 uploadOptions.params = params;
                 var ft = new FileTransfer();
