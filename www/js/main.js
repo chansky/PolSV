@@ -348,15 +348,22 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#contactsPageView');
         this.changePage(new contactsPageView()); 
 
+        var w=windowWidth/2;
+        var h=windowHeight/2;
+        var loadIsh='<div id="loadIsh" style="width:'+w+'px;top:'+h+'px;"><img id="theLoadingPic" src="img/ajax-loader.gif"></div>';
+        $("#contactsPageContent").append(loadIsh);
+
         var contactOptions = new ContactFindOptions();   //this used to be var options =... but i changed it
         contactOptions.filter = "";
         contactOptions.multiple = true;
         var fields = ["displayName","phoneNumbers"];
+        console.log("about to call find contacts");
         navigator.contacts.find(fields, onSuccess, onError, contactOptions);      
         var loaded = false;
         var pnums = [];  
 
         function onSuccess(contacts) {
+            console.log("Success, found contacts");
             for(var i=0; i<contacts.length; i++){
                 if(contacts[i].displayName){
                     if(contacts[i].phoneNumbers != null){
@@ -369,22 +376,30 @@ PushNotification.getDeviceId(function (deviceId) {
 
             var usernames = [];
             var fullnames = []; 
+            console.log("about to make the post request part of find contacts");
              $.post("https://web.engr.illinois.edu/~chansky2/findContacts.php",{phonenumbers:pnums},function(res){
                // window.alert(res);
-                var obj = jQuery.parseJSON(res);
-                //window.alert(obj);
-                for(var i=0; i<obj.length; i++){
-                    usernames.push(obj[i].username);
-                    fullnames.push(obj[i].fullname);
-                }
+                $("#loadIsh").remove(); //removes the laoding icon
+               console.log("find contacts php returned: "+res);
+               if(res!="No"){  //never have tested this case (i'd need a phone who doesn't have my #)
+                    var obj = jQuery.parseJSON(res);   //or i'd have to remove my # from the DB
+                    //window.alert(obj);
+                    for(var i=0; i<obj.length; i++){
+                        usernames.push(obj[i].username);
+                       // fullnames.push(obj[i].fullname);
+                    }
 
-                $("#frame").html('<fieldset id="contactsCheckboxes" data-role="controlgroup"><legend>Select who you want to follow:</legend></fieldset>');
-                for(var i=0; i<usernames.length; i++){
-                    //document.write(contacts[i].phoneNumbers.length)
-                        $("fieldset").append('<input type="checkbox" name="' + usernames[i] + '" id="id' + i + '"><label for="id' + i + '">' + usernames[i] + '</label>');
-                }   
-                $("#frame").trigger("create");
-                loaded = true;
+                    $("#frame").html('<fieldset id="contactsCheckboxes" data-role="controlgroup"><legend>Select who you want to follow:</legend></fieldset>');
+                    for(var i=0; i<usernames.length; i++){
+                        //document.write(contacts[i].phoneNumbers.length)
+                            $("fieldset").append('<input type="checkbox" name="' + usernames[i] + '" id="id' + i + '"><label for="id' + i + '">' + usernames[i] + '</label>');
+                    }   
+                    $("#frame").trigger("create");
+                    loaded = true;
+                }
+                else{
+                    window.location.hash="createPoll";
+                }
              });
         }
 
@@ -556,6 +571,12 @@ PushNotification.getDeviceId(function (deviceId) {
     sendToPage:function(page){
         console.log('#sendToPage');
         this.changePage(new sendToView());  //inserts the view into the dom
+
+        var w=windowWidth/2;
+        var h=windowHeight/2;
+        var loadIsh='<div id="loadIsh" style="width:'+w+'px;top:'+h+'px;"><img id="theLoadingPic" src="img/ajax-loader.gif"></div>';
+        $("#contentStuff").append(loadIsh);
+
         var shit= document.getElementById("contentStuff");
         var hammertime = new Hammer(shit);
         hammertime.on('swipeleft', function(ev) {
@@ -580,6 +601,7 @@ PushNotification.getDeviceId(function (deviceId) {
             for (var i = 0; i < contacts.length; i++) {
                 $("#sendToCheckboxes").append('<input type="checkbox" name="' + contacts[i] + '" id="id' + i + '"><label for="id' + i + '">' + contacts[i] + '</label>');
             }
+            $("#loadIsh").remove(); //removes the laoding icon
             $("#sendToFrame").trigger("create");
         });
     },
@@ -597,6 +619,7 @@ PushNotification.getDeviceId(function (deviceId) {
         var PID=[];
         var dataLength=0;
         var endtime=[];
+        var timeRemaining=[];
         if(feedVisited==0){  //just added for control of reload
             console.log("feedVisited was 0 so we got data");
             getFeedData();
@@ -605,6 +628,7 @@ PushNotification.getDeviceId(function (deviceId) {
         else{  //we already have feed data (and its in localStorage)
             var endtime=jQuery.parseJSON(localStorage.getItem("endtimeArr"));
             var usernames=jQuery.parseJSON(localStorage.getItem("userArr"));
+            var timeRemaining=jQuery.parseJSON(localStorage.getItem("timeRemainingArr"));
             console.log("first endtime: "+endtime[0]);
             dataLength=usernames.length;
             displayFeed();
@@ -617,8 +641,10 @@ PushNotification.getDeviceId(function (deviceId) {
           //attempt to pause the animations:
           console.log("Stopping timeCircles and dataLength is: "+dataLength);
           for(var i=0; i<dataLength; i++){
-            var input="."+i;
-            $(input).TimeCircles().stop();
+            if(timeRemaining[i]>=0){
+                var input="."+i;
+                $(input).TimeCircles().stop();
+            }
           }
 
           window.location.hash = "createPoll";
@@ -631,8 +657,10 @@ PushNotification.getDeviceId(function (deviceId) {
             //feedVisited=0;
                       console.log("Stopping timeCircles and dataLength is: "+dataLength);
           for(var i=0; i<dataLength; i++){
-            var input="."+i;
-            $(input).TimeCircles().stop();
+            if(timeRemaining[i]>=0){
+                var input="."+i;
+                $(input).TimeCircles().stop();
+            }
           }
             $('#feedList').empty();
             resetFeedArrays();
@@ -667,30 +695,36 @@ PushNotification.getDeviceId(function (deviceId) {
             window.localStorage.setItem(selectedIndex, $(this).index());  //i added this semi colon july 9th
            console.log("Stopping timeCirlces and dataLength is: "+dataLength);
           for(var i=0; i<dataLength; i++){
-            var input="."+i;
-            $(input).TimeCircles().stop();
+            if(timeRemaining[i]>=0){
+                var input="."+i;
+                $(input).TimeCircles().stop();
+            }
           }
             window.location.hash="chart";
         });
 
         function getFeedData(){
             $.get("https://web.engr.illinois.edu/~chansky2/personalFeed.php",function(data){
+               // console.log("data: "+data);
                 if(data!= null && data!==undefined){    //VERY CRAPPY NULL CHECKER....
                     var obj = jQuery.parseJSON( data );
                     for(var i = 0; i < obj.length; i++) {
                         usernames.push(obj[i].username);
                         PID.push(obj[i].PID);
                         endtime.push(obj[i].endtime);
+                        timeRemaining.push(obj[i].timeRemaining);
                     }
                     dataLength=usernames.length;
                     displayFeed();
                     var userArr="userArr";
                     var endtimeArr="endtimeArr";
                     var p_idArr= "p_idArr";
+                    var timeRemainingArr="timeRemainingArr";
                     if(typeof(window.localStorage) != 'undefined'){ 
                         window.localStorage.setItem(userArr, JSON.stringify(usernames));
                         window.localStorage.setItem(endtimeArr, JSON.stringify(endtime));
                         window.localStorage.setItem(p_idArr, JSON.stringify(PID));
+                        window.localStorage.setItem(timeRemainingArr, JSON.stringify(timeRemaining));
                     } 
                     else{ 
                         console.log("store FAILED");
@@ -710,36 +744,63 @@ PushNotification.getDeviceId(function (deviceId) {
                 //var generic="display:inline-block; height:18%; margin:10px";
                 var clock="display:inline-block; width:100%; height:20%;";
                 var helperText="'s poll ends in: ";
-                var phrase='<li><a><h2>'+usernames[j]+helperText+'</h2><div class="'+j+'", data-date="'+endtime[j]+'", style="'+clock+'"></div></a></li>';
+                //going to calculate time differences to avoid looking at phone's timezone
+          /*      var d = new Date();
+                var seconds = d.getUTCSeconds();
+                var minutes = d.getUTCMinutes();
+                var hour = d.getUTCHours();
+                var year = d.getUTCFullYear();
+                var month = d.getUTCMonth()+1; // beware: January = 0; February = 1, etc.  //need +1 b/c of php
+                var day = d.getUTCDate();
+                var tempDate=year+"-"+month+"-"+day+" "+hour+":"+minutes+":"+seconds;
+                var date2=new Date(endtime[j]);
+                var date1=new Date(tempDate);
+                var timeDiff = date2.getTime() - date1.getTime();  //Math
+                timeDiff=timeDiff/1000;
+                console.log("time difference is: "+timeDiff);
+                if(timeDiff<=0){
+                    //helperText="'s poll disappears in: ";
+                    helperText="'s poll has ended (but can still be viewed)";
+                } */
+                var timeDiff=timeRemaining[j];
+                //console.log("timeDiff is: "+timeDiff);
+                if(timeDiff<=0){
+                    //helperText="'s poll disappears in: ";
+                    helperText="'s poll has ended (but can still be viewed)";
+                }
+
+                var phrase='<li><a><h2>'+usernames[j]+helperText+'</h2><div class="'+j+'", data-timer="'+timeDiff+'", style="'+clock+'"></div></a></li>';
                 $('#feedList').append(phrase).listview('refresh');
                 //add the time circle for each row:
                 //console.log("endtime for item "+j+", is: "+endtime[j]);
-                var input="."+j;
-                $(input).TimeCircles({ "animation": "smooth",
-    "bg_width": 1.2,
-    "fg_width": 0.1,
-    "circle_bg_color": "#60686F", "count_past_zero": false, "time": {
-"Days": {
-            "text": "Days",
-            "color": "#FFCC66",
-            "show": true
-        },
-        "Hours": {
-            "text": "Hours",
-            "color": "#99CCFF",
-            "show": true
-        },
-        "Minutes": {
-            "text": "Minutes",
-            "color": "#BBFFBB",
-            "show": true
-        },
-        "Seconds": {
-            "text": "Seconds",
-            "color": "#FF9999",
-            "show": true
-        }
-                }});
+                if(timeDiff>0){
+                    var input="."+j;
+                    $(input).TimeCircles({ "animation": "smooth",
+                    "bg_width": 1.2,
+                    "fg_width": 0.1,
+                    "circle_bg_color": "#60686F", "count_past_zero": false, "time": {
+                    "Days": {
+                        "text": "Days",
+                        "color": "#FFCC66",
+                        "show": true
+                    },
+                    "Hours": {
+                        "text": "Hours",
+                        "color": "#99CCFF",
+                        "show": true
+                    },
+                    "Minutes": {
+                        "text": "Minutes",
+                        "color": "#BBFFBB",
+                        "show": true
+                    },
+                    "Seconds": {
+                        "text": "Seconds",
+                        "color": "#FF9999",
+                        "show": true
+                    }
+                    }});
+                }
                 //$(input).TimeCircles({total_duration: "Minutes"}).rebuild();
 
             }
@@ -753,6 +814,7 @@ PushNotification.getDeviceId(function (deviceId) {
             PID=[];
             dataLength=0;
             endtime=[];
+            timeRemaining=[];
         }
         
     },
@@ -761,6 +823,11 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#chartView');
         this.changePage(new chartView());
 
+        var w=windowWidth/2;
+        var h=windowHeight/2;
+        var loadIsh='<div id="loadIsh" style="width:'+w+'px;top:'+h+'px;"><img id="theLoadingPic" src="img/ajax-loader.gif"></div>';
+        $("#chartContent").append(loadIsh);
+        console.log("appended loadIsh");
     //do your stuff
         var shit= document.getElementById("chartContent");
         var hammertime = new Hammer(shit);
@@ -803,8 +870,10 @@ PushNotification.getDeviceId(function (deviceId) {
             pollTitle=obj[0].textt;  //because the first item in the returned array is just the poll text
             Over=obj[1].numvotes;
             prevVote=obj[1].choiceID;
+            $("#loadIsh").remove(); //removes the laoding icon
             if(Over==1){
-                window.alert("the poll has ended");
+                console.log("the poll has ended");
+                //window.alert("the poll has ended");
             }
             for(var i =2; i<obj.length; i++){
                 options.push(obj[i].textt);
@@ -1022,6 +1091,7 @@ PushNotification.getDeviceId(function (deviceId) {
                 }]
             });
         });  //close POST
+        
     },
 
     settings:function(page){
@@ -1380,6 +1450,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
             else{
                 noTimePicked=1;
             }
+            //seems like the below should only happen if no time picked is still equal to 0...
             if(minutes>=60){
               minutes=minutes%60;
               hour=hour+1;
@@ -1397,11 +1468,11 @@ document.addEventListener("deviceready",onDeviceReady,false);
               d=d+1;
             }
             if(day>daysInMonth(month,year)){
-              day=1;
+              day=day-daysInMonth(month,year);
               month=month+1;
             }
             if(d>daysInMonth(mo, y)){
-              d=1;
+              d=d-daysInMonth(mo, y);
               mo=mo+1;
             }
             if(month>11){
