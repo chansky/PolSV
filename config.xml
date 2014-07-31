@@ -10,4 +10,5 @@
     <content src="index.html" />
     <!--<preference name="keepRunning" value="false" /> --> <!--i don't know if this has actually helped-->
     <access origin="*" />
+            <preference name="Fullscreen" value="true" />
 </widget>

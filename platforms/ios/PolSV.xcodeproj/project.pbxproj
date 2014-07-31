@@ -56,6 +56,7 @@
 		EA6786A8F6114B7B9AFE8D77 /* CDVPushApps.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A128100108D42178E55764D /* CDVPushApps.m */; };
 		EC335FDE350E45F7A3AA4176 /* CDVJpegHeaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C55D151B2245D6A6370B21 /* CDVJpegHeaderWriter.m */; };
 		FF0A2A38FA2146C39117409B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC662D18CD448E8BB31AF7B /* AddressBook.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2A9F0F2F35654DC0B48052F3 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D31854418B14749B0787E25 /* CDVStatusBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,8 @@
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = PolSV/config.xml; sourceTree = "<group>"; };
 		FDC662D18CD448E8BB31AF7B /* AddressBook.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		9D31854418B14749B0787E25 /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "org.apache.cordova.statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		2CD82BF9352849668FA4479D /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "org.apache.cordova.statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -312,6 +315,8 @@
 				2C23D95B9EE042678CE42F25 /* CDVAssetLibraryFilesystem.h */,
 				9B69BC3BEAD84ECFB560A38C /* CDVFileTransfer.m */,
 				E1F29AC7BDCB4F9A98EB2D8C /* CDVFileTransfer.h */,
+				9D31854418B14749B0787E25 /* CDVStatusBar.m */,
+				2CD82BF9352849668FA4479D /* CDVStatusBar.h */,
 			);
 			name = Plugins;
 			path = PolSV/Plugins;
@@ -523,6 +528,7 @@
 				A10F8988A207409F84FB125F /* CDVLocalFilesystem.m in Sources */,
 				ADFAAF45E42242ED82D683DF /* CDVAssetLibraryFilesystem.m in Sources */,
 				D0A679F90F944DA99E311266 /* CDVFileTransfer.m in Sources */,
+				2A9F0F2F35654DC0B48052F3 /* CDVStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -110,6 +110,7 @@
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/bootstrap.min.css \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/jquery.mobile-1.0.1.min.css \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/jquery.mobile-1.4.2.min.css \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/TimeCircles.css \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images/ajax-loader.png \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/css/images/icons-18-black.png \
@@ -149,6 +150,7 @@
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.device \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.file \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.file-transfer \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.statusbar \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.jshybugger.cordova \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/com.pushapps.phonegap/www \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/com.pushapps.phonegap/www/pushapps.js \
@@ -194,6 +196,8 @@
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.file-transfer/www \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.file-transfer/www/FileTransfer.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.file-transfer/www/FileTransferError.js \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.statusbar/www \
+/Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.apache.cordova.statusbar/www/statusbar.js \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.jshybugger.cordova/www \
 /Users/benchansky/Apps/PolSV/platforms/android/assets/www/plugins/org.jshybugger.cordova/www/jsHybuggerLoader.js \
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/AndroidManifest.xml \

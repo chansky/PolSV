@@ -116,6 +116,9 @@
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$TrackingInputStream.class \
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer.class \
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileUploadResult.class \
+/Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/apache/cordova/statusbar/StatusBar$1.class \
+/Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/apache/cordova/statusbar/StatusBar$2.class \
+/Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/apache/cordova/statusbar/StatusBar.class \
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/classes/org/jshybugger/cordova/JsHybuggerPlugin.class \
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/dexedLibs/classes-7deec2839a3ec002dfd1cc6c108647ec.jar \
 /Users/benchansky/Apps/PolSV/platforms/android/ant-build/dexedLibs/jshybugger-library-14ccba28a55b902982c82a0e6643ad95.jar \

@@ -252,6 +252,13 @@ module.exports = [
         "file": "plugins/org.jshybugger.cordova/www/jsHybuggerLoader.js",
         "id": "org.jshybugger.cordova.jsHybuggerLoader",
         "runs": true
+    },
+    {
+        "file": "plugins/org.apache.cordova.statusbar/www/statusbar.js",
+        "id": "org.apache.cordova.statusbar.statusbar",
+        "clobbers": [
+            "window.StatusBar"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -264,7 +271,8 @@ module.exports.metadata =
     "org.apache.cordova.device": "0.2.9",
     "org.apache.cordova.file": "1.1.0",
     "org.apache.cordova.file-transfer": "0.4.3",
-    "org.jshybugger.cordova": "4.5.3"
+    "org.jshybugger.cordova": "4.5.3",
+    "org.apache.cordova.statusbar": "0.1.6"
 }
 // BOTTOM OF METADATA
 });

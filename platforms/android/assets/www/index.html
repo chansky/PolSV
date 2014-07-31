@@ -6,7 +6,7 @@
    <!--<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">  -->  <!-- the new line^^^-->
                    <link href="css/TimeCircles.css" rel="stylesheet">   <!--recently added (7-29-14)-->  
 
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.2.min.css" />
 <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- The Templates -->
 
@@ -23,9 +23,6 @@
                 </div>
             </div>
           
-        </div>
-        </div>
-
     </script>
 
     <script type="text/template" id="loginPage">
@@ -178,7 +175,7 @@
 
 <script type="text/template" id="sendToPage">
   <div data-role="header">
-             <h1>Friends</h1>
+             <h1>Select Recipients</h1>
 
         </div>
         <div data-role="content" id="contentStuff" style="height:100vh">
@@ -188,8 +185,13 @@
 </script>
 
 <script type="text/template" id="personalFeed">
-    <div data-role="content" id="personalFeedContent" style="height:100vh">
-        <ul id="feedList" data-role="listview"></ul>
+    <div data-role="header">
+        <h1>Pol</h1>
+        <a data-role="button" data-theme="b" id="refreshPersonalFeed" class="ui-btn ui-corner-all ui-icon-refresh ui-btn-icon-notext">Refresh Icon</a>
+    </div>
+        <div data-role="content" id="personalFeedContent" style="height:100vh">
+            <ul id="feedList" data-role="listview"></ul>
+        </div>
     </div>
 </script>
 
@@ -209,6 +211,7 @@
             <a data-role="button" id="listFriendsBtn" data-theme="b" >My Friends</a>
             <a data-role="button" id="searchFN" data-theme="b" >Add New Friends</a>
             <a data-role="button" id="listInstasBtn" data-theme="b" >Notifications</a>
+            <a data-role="button" id="makeGroupsBtn" data-theme="b">Make Groups</a>
             <a data-role="button" id="logOutBtn" data-theme="c">Log Out</a>
         </div>
     </div>
@@ -247,6 +250,20 @@
     </div>
     <div data-role="content" id="searchContent" style="height:100vh">
         <ul data-role="listview" id="frame"></ul>
+    </div>
+</script>
+
+<script type="text/template" id="makeGroupsPage">
+    <div data-role="header">
+         <h1>Create a new Group</h1>
+    </div>
+    <div data-role="content" id="makeGroupsContent" style="height:100vh">
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <label for="groupTitle"> Group Title </label>
+            <input type="text" name="groupTitle" id="groupTitle" value="" placeholder="Group Title"/>
+        </div>
+        <div id = "makeGroupsframe"></div>
+        <a id="addToGroup" data-role="button" onclick="addToGroup()"> Add to Group</a>
     </div>
 </script>
 

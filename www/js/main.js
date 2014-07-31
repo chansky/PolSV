@@ -118,6 +118,14 @@ window.searchView = Backbone.View.extend({
     }   
 });
 
+window.makeGroupsView = Backbone.View.extend({
+    template:_.template($('#makeGroupsPage').html()),
+     render:function (eventName) {
+        $(this.el).html(this.template());
+        return this;
+     }
+})
+
 var AppRouter = Backbone.Router.extend({
 
     routes:{
@@ -132,7 +140,8 @@ var AppRouter = Backbone.Router.extend({
         "settings":"settings",
         "listFriends":"listFriends",
         "instaPage":"instaPage",
-        "search":"search"
+        "search":"search",
+        "makeGroupsPage":"makeGroupsPage"
     },
 
     initialize:function () {
@@ -591,19 +600,38 @@ PushNotification.getDeviceId(function (deviceId) {
 
         var contacts = [];
         var fullNames= [];
+        var groupNames=[];
+
+        $.get("https://web.engr.illinois.edu/~chansky2/buildGroup.php", function(data){
+            console.log("data is: "+data);
+            var obj = jQuery.parseJSON(data);            
+            console.log("parsed obj is: "+obj);
+            console.log("obj at 0 is: "+obj[0]);
+            console.log("length of obj is: "+obj.length);
+            for(var i = 0; i < obj.length; i++) {
+              if(jQuery.inArray(obj[i], groupNames)==-1)  //to prevent duplicates
+                console.log("obj at: "+i+" is: "+obj[i]+"\n");
+                groupNames.push(obj[i].gn);     
+            }
+            $("#sendToFrame").append('<fieldset id="groupNameCheckBoxes" data-role="controlgroup"><legend>Groups</legend></fieldset>');
+            for (var i = 0; i < groupNames.length; i++) {
+                $("#groupNameCheckBoxes").append('<input type="checkbox" name="' + groupNames[i] + '" id="id' + i + '"><label for="id' + i + '">' + groupNames[i] + '</label>');
+            }
+            $("#sendToFrame").trigger("create");
+        });
         $.get("https://web.engr.illinois.edu/~chansky2/getFriends.php", function(data){
             var obj = jQuery.parseJSON(data);
             for(var i = 0; i < obj.length; i++) {
               if(jQuery.inArray(obj[i].username, contacts)==-1)  //to prevent duplicates
                 contacts.push(obj[i].username);     
             }
-            $("#sendToFrame").html('<fieldset id="sendToCheckboxes" data-role="controlgroup"><legend>Select who you want to send your Poll to:</legend></fieldset>');
+            $("#sendToFrame").append('<fieldset id="sendToCheckboxes" data-role="controlgroup"><legend>Friends</legend></fieldset>');
             for (var i = 0; i < contacts.length; i++) {
                 $("#sendToCheckboxes").append('<input type="checkbox" name="' + contacts[i] + '" id="id' + i + '"><label for="id' + i + '">' + contacts[i] + '</label>');
             }
             $("#loadIsh").remove(); //removes the laoding icon
             $("#sendToFrame").trigger("create");
-        });
+        });  
     },
 
     personalFeed:function(page){
@@ -633,12 +661,12 @@ PushNotification.getDeviceId(function (deviceId) {
             dataLength=usernames.length;
             displayFeed();
         }
-        var shippar= document.getElementById("personalFeedContent");
-        var specialHam = new Hammer(shippar);
-        specialHam.get('swipe').set({ direction: Hammer.DIRECTION_ALL });  //how does this affect other hammers?
-        specialHam.on('swipeleft', function() {
+      
+        var shippar2=document.getElementById("personalFeedContent");
+        var specialHam2= new Hammer(shippar2);
+        specialHam2.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
+          specialHam2.on('swipeleft', function() {
           console.log("left"); 
-          //attempt to pause the animations:
           console.log("Stopping timeCircles and dataLength is: "+dataLength);
           for(var i=0; i<dataLength; i++){
             if(timeRemaining[i]>=0){
@@ -646,26 +674,11 @@ PushNotification.getDeviceId(function (deviceId) {
                 $(input).TimeCircles().stop();
             }
           }
-
           window.location.hash = "createPoll";
         });
-        specialHam.on("swiperight", function(){
+        specialHam2.on("swiperight", function(){
             console.log("right");
-        });
-        specialHam.on("swipedown", function(){   //need this
-            console.log("up"); 
-            //feedVisited=0;
-                      console.log("Stopping timeCircles and dataLength is: "+dataLength);
-          for(var i=0; i<dataLength; i++){
-            if(timeRemaining[i]>=0){
-                var input="."+i;
-                $(input).TimeCircles().stop();
-            }
-          }
-            $('#feedList').empty();
-            resetFeedArrays();
-            getFeedData();
-        });  
+        });   
       /*  $("#personalFeedContent").touchwipe({
          wipeLeft: function() {
           console.log("left"); 
@@ -701,6 +714,19 @@ PushNotification.getDeviceId(function (deviceId) {
             }
           }
             window.location.hash="chart";
+        });
+         $("#refreshPersonalFeed").on("tap", function(){
+            console.log("refreshing feed");
+            console.log("Stopping timeCircles and dataLength is: "+dataLength);
+            for(var i=0; i<dataLength; i++){
+              if(timeRemaining[i]>=0){
+                    var input="."+i;
+                    $(input).TimeCircles().stop();
+                }
+            }
+            $('#feedList').empty();
+            resetFeedArrays();
+            getFeedData();            
         });
 
         function getFeedData(){
@@ -1134,6 +1160,9 @@ PushNotification.getDeviceId(function (deviceId) {
         $("#searchFN").on("tap",function(e){
                     window.location.hash = "search";
         });
+        $("#makeGroupsBtn").on("tap",function(e){
+                    window.location.hash = "makeGroupsPage";
+        });
     },
 
     listFriends:function(page){
@@ -1174,7 +1203,7 @@ PushNotification.getDeviceId(function (deviceId) {
             for (var i = 0; i < contacts.length; i++) {
                 $("#listFriendsCheckboxes").append('<input type="checkbox" name="' + contacts[i] + '" id="id' + i + '"><label for="id' + i + '">' + contacts[i] + '</label>');
             }
-                            $("#listFriendsframe").trigger("create");
+            $("#listFriendsframe").trigger("create");
 
         });
             //$("#frame").empty();
@@ -1268,6 +1297,7 @@ PushNotification.getDeviceId(function (deviceId) {
                     if(jQuery.inArray(username, selected)==-1)
                         selected.push(username);
                     $.post("https://web.engr.illinois.edu/~chansky2/followContacts.php",{type:"follow", usernames:selected},function(res){
+                        console.log("followContacts php says: "+res);
                         //window.alert(res);
                        // window.alert("Added: "+username);
                     });
@@ -1278,6 +1308,35 @@ PushNotification.getDeviceId(function (deviceId) {
             }
         });
     },    
+    makeGroupsPage:function (page) {
+        console.log('#makeGroupsPage');
+        this.changePage(new makeGroupsView());
+        var shit= document.getElementById("makeGroupsContent");
+        var hammertime = new Hammer(shit);
+        hammertime.on('swipeleft', function(ev) {
+            console.log("left");
+        });
+        hammertime.on("swiperight", function(ev){
+            window.location.hash="settings";
+        });
+
+        var groupContacts = [];
+        $("#makeGroupsframe").html('<fieldset id="makeGroupCheckboxes" data-role="controlgroup"><legend>Check box to add friend to group</legend></fieldset>');
+        $.get("https://web.engr.illinois.edu/~chansky2/getFriends.php", function(data){
+    //                                $("#listFriendsframe").trigger("create");
+            console.log(data);
+            var obj = jQuery.parseJSON(data);
+            for(var i=0; i<obj.length; i++){
+                if(jQuery.inArray(obj[i].username, groupContacts)==-1)  //fortunately this is no longer necessary
+                    groupContacts.push(obj[i].username);   //since i prevent duplicate insertion into the friendship table
+            }
+            for (var i = 0; i < groupContacts.length; i++) {
+                $("#makeGroupCheckboxes").append('<input type="checkbox" name="' + groupContacts[i] + '" id="id' + i + '"><label for="id' + i + '">' + groupContacts[i] + '</label>');
+            }
+            $("#makeGroupsframe").trigger("create");
+
+        });
+    },
     changePage:function (page) {
         //$('div[data-role="page"]').remove();  //this is doing something but maybe its removing too much? not sure if detach or remove is best...
         //console.log("just got into changePage fn: "+$('div[data-role="page"]').html());
@@ -1312,6 +1371,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
 
     function onDeviceReady() {
         console.log("device is ready");
+        StatusBar.hide();
         pictureSource=navigator.camera.PictureSourceType;
         destinationType=navigator.camera.DestinationType;
         document.addEventListener("pause", onPause, false);
@@ -1512,9 +1572,14 @@ document.addEventListener("deviceready",onDeviceReady,false);
 
     function send(){
         var selected = [];
+        var groupsSelected=[];
         $('#sendToCheckboxes input:checked').each(function() {
             selected.push($(this).attr('name'));
         });
+        $('#groupNameCheckBoxes input:checked').each(function(){
+            groupsSelected.push($(this).attr('name'));
+        });
+            console.log("1st group selected: "+groupsSelected[0]);
     //get info from local storage
         var info=(localStorage.getItem("allPollInfo"));
         var parsedInfo=JSON.parse(info);
@@ -1526,7 +1591,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
         var photos=parsedInfo["photoArr"];
         window.alert("your poll is being created!");
         $.post("https://web.engr.illinois.edu/~chansky2/addPollI.php",{question:question, num_options:options.length,
-            options:options, insta:isInsta, endtime:et, disappearTime:dt, receivers:selected},function(res){
+            options:options, insta:isInsta, endtime:et, disappearTime:dt, receivers:selected, receivingGroups:groupsSelected},function(res){
             //window.alert("res: "+res);
             console.log("the output of the call to addPollI: "+res);
             var retVal=parseInt(res);
@@ -1606,6 +1671,20 @@ function removeFn(){
     //window.alert(res);
    window.location.hash = "settings";
  });
+}
+
+function addToGroup(){
+    var selected = [];
+    $('#makeGroupCheckboxes input:checked').each(function() {
+      selected.push($(this).attr('name'));
+    });
+        var gN = $("#groupTitle").val();
+        console.log("group name is: "+gN);
+    $.post("https://web.engr.illinois.edu/~chansky2/buildGroup.php",{groupees:selected, groupName:gN},function(res){
+            //window.alert("res: "+res);
+            console.log("the output of the call to buildGroup: "+res);
+            window.location.hash = "settings";
+        });
 }
 
 function update(){

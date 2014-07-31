@@ -30,6 +30,9 @@
         <param name="android-package" value="org.jshybugger.cordova.JsHybuggerPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="StatusBar">
+        <param name="android-package" onload="true" value="org.apache.cordova.statusbar.StatusBar" />
+    </feature>
     <name>PolSV</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -39,4 +42,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="Fullscreen" value="true" />
 </widget>
