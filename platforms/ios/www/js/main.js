@@ -867,19 +867,61 @@ PushNotification.getDeviceId(function (deviceId) {
             window.location.hash="personalFeed";
         });
       
-    
-       /* $("#chartContent").touchwipe({
-            wipeLeft: function() {
-            console.log("left"); 
-            },
-            wipeRight: function() { 
-                console.log("right"); 
-                window.location.hash = "personalFeed";
-            },
-            min_move_x: 20,
-            min_move_y: 20,
-            preventDefaultEvents: true
-        }); */
+
+var chart; // global
+        
+        /**
+         * Request data from the server, add it to the graph and set a timeout to request again
+         */
+        function requestData() {
+            $.ajax({
+                url: 'live-server-data.php', 
+                success: function(point) {
+                    var series = chart.series[0],
+                        shift = series.data.length > 20; // shift if the series is longer than 20
+        
+                    // add the point
+                    chart.series[0].addPoint(eval(point), true, shift);
+                    
+                    // call it again after one second
+                    console.log("loaded new data");
+                    setTimeout(requestData, 1000);  
+                },
+                cache: false
+            });
+        }
+            
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: requestData
+                    }
+                },
+                title: {
+                    text: 'Live random data'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150,
+                    maxZoom: 20 * 1000
+                },
+                yAxis: {
+                    minPadding: 0.2,
+                    maxPadding: 0.2,
+                    title: {
+                        text: 'Value',
+                        margin: 80
+                    }
+                },
+                series: [{
+                    name: 'Random data',
+                    data: []
+                }]
+            });     
+        
+      /*
         var Over=0;
         var GenerateChart=0;
         var index=(localStorage.getItem("selectedIndex"));
@@ -907,8 +949,14 @@ PushNotification.getDeviceId(function (deviceId) {
                 cIDs.push(obj[i].choiceID);
                 isPics.push(obj[i].pic);
             }
-            var totalVotes = 0;
-            for (var i = 0; i < options.length; i++) {
+
+            displayOptions();
+            buildChart();
+            //$('#container').trigger("create");
+        });  //close post up here
+
+        function displayOptions(){
+                for (var i = 0; i < options.length; i++) {
                 var id = 'radio-choice-' + i;
                 label = options[i];
                 value = options[i];
@@ -920,6 +968,9 @@ PushNotification.getDeviceId(function (deviceId) {
                 }
                 $("fieldset").append(secondPhrase);
             }
+        }
+            var totalVotes = 0;
+            displayOptions();
             var counter=0;
             $("#frame").trigger("create");
             $('#myFieldset').delegate('div', 'vclick', function() {
@@ -954,6 +1005,7 @@ PushNotification.getDeviceId(function (deviceId) {
                 var tPop="#radio-choice-"+important_index+"pop";
                 $(tPop).popup('open');
             });  
+
             $('#frame input').on('change', function () {
                 if (prevVote !== null&&prevVote!=0) {
                     var i = 0;
@@ -1037,23 +1089,73 @@ PushNotification.getDeviceId(function (deviceId) {
                     }]
                 });
             });  //closes the frame on change fn
-            if(Over==0||GenerateChart==0){
-                for (var i = 0; i < votes.length; i++) {
-                    totalVotes += votes[i];
-                }
-                var percentages = [];
-                var best = -1;
-                for (i = 0; i < votes.length; i++) {
-                    percentages[i] = votes[i] / totalVotes;
-                    if (percentages[i] > best) {
-                        best = percentages[i];
+
+            function buildChart(){
+                console.log("Over value: "+Over+", and GenerateChart value: "+GenerateChart);                
+                if(Over==0||GenerateChart==0){
+                    for (var i = 0; i < votes.length; i++) {
+                        totalVotes += votes[i];
                     }
+                    var percentages = [];
+                    var best = -1;
+                    for (i = 0; i < votes.length; i++) {
+                        percentages[i] = votes[i] / totalVotes;
+                        if (percentages[i] > best) {
+                            best = percentages[i];
+                        }
+                    }
+                    var ser = [];
+                    GenerateChart=1;
+                    ser = generateData(options, percentages);
                 }
-                var ser = [];
-                GenerateChart=1;
-                ser = generateData(options, percentages);
+
+     Highcharts.getOptions().plotOptions.pie.colors = (function () {
+                    var colors = [],
+                    base = Highcharts.getOptions().colors[Math.floor((Math.random() * 10))],
+                    i;
+                    for (i = 0; i < options.length; i++) {
+                        colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+                    }
+                    return colors;
+                }());
+
+
+                // Build the chart
+                $('#container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false
+                    },
+                    title: {
+                        text: pollTitle
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: 'Percentage',
+                        data: ser
+                    }]
+                });
             }
+        
             function generateData(opts, percs) {
+                console.log("generateData called");
                 var s = [];
                 for (var i = 0; i < opts.length; i++) {
                     if (percs[i] === best) {
@@ -1074,50 +1176,9 @@ PushNotification.getDeviceId(function (deviceId) {
                 }
                 return s;
             }
-            Highcharts.getOptions().plotOptions.pie.colors = (function () {
-                var colors = [],
-                base = Highcharts.getOptions().colors[Math.floor((Math.random() * 10))],
-                i;
-                for (i = 0; i < options.length; i++) {
-                    colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
-                }
-                return colors;
-            }());
-
-            // Build the chart
-            $('#container').highcharts({
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false
-                },
-                title: {
-                    text: pollTitle
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>',
-                            style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    type: 'pie',
-                    name: 'Percentage',
-                    data: ser
-                }]
-            });
-        });  //close POST
-        
+           
+        //});  //close POST
+        */
     },
 
     settings:function(page){

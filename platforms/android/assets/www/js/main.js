@@ -164,8 +164,8 @@ var AppRouter = Backbone.Router.extend({
         console.log('#loginPage');
         this.changePage(new loginPageView());   
 
-        var shit= document.getElementById("loginPageContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("loginPageContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log("left");
         });
@@ -243,8 +243,8 @@ $("#loginForm").on("submit", function(e){
         this.changePage(new registerPageView());   
        // register();
 
-        var shit= document.getElementById("regPageContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("regPageContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log("left");
         });
@@ -445,8 +445,8 @@ PushNotification.getDeviceId(function (deviceId) {
 
         }); */
     //do your stuff
-            var shit= document.getElementById("createPollContent");
-            var hammertime = new Hammer(shit);
+            var tempContent= document.getElementById("createPollContent");
+            var hammertime = new Hammer(tempContent);
             hammertime.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
         //hammertime.defaults.behavior.touchAction = 'pan-y';
             hammertime.on("swiperight", function(){
@@ -586,8 +586,8 @@ PushNotification.getDeviceId(function (deviceId) {
         var loadIsh='<div id="loadIsh" style="width:'+w+'px;top:'+h+'px;"><img id="theLoadingPic" src="img/ajax-loader.gif"></div>';
         $("#contentStuff").append(loadIsh);
 
-        var shit= document.getElementById("contentStuff");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("contentStuff");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
                 console.log("left"); 
                 window.location.hash = "createPoll";
@@ -855,8 +855,8 @@ PushNotification.getDeviceId(function (deviceId) {
         $("#chartContent").append(loadIsh);
         console.log("appended loadIsh");
     //do your stuff
-        var shit= document.getElementById("chartContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("chartContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.get('swipe').set({direction: Hammer.DIRECTION_HORIZONTAL});
        // hammertime.defaults.behavior.touchAction = 'pan-y';
         hammertime.on('swipeleft', function() {
@@ -1117,15 +1117,15 @@ PushNotification.getDeviceId(function (deviceId) {
                 }]
             });
         });  //close POST
-        
+
     },
 
     settings:function(page){
         console.log('#settingsView');
         this.changePage(new settingsView());
 
-        var shit= document.getElementById("settingsContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("settingsContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log(ev);
         });
@@ -1169,8 +1169,8 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#listFriendsView');
         this.changePage(new listFriendsView());
 
-        var shit= document.getElementById("listFriendsContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("listFriendsContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log("left");
         });
@@ -1213,8 +1213,8 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#listInstasView');
         this.changePage(new listInstasView());
 
-        var shit= document.getElementById("InstaPageContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("InstaPageContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log("left");
         });
@@ -1255,8 +1255,8 @@ PushNotification.getDeviceId(function (deviceId) {
         console.log('#searchView');
         this.changePage(new searchView());
         var selected = [];
-        var shit= document.getElementById("searchContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("searchContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log("left");
         });
@@ -1311,8 +1311,8 @@ PushNotification.getDeviceId(function (deviceId) {
     makeGroupsPage:function (page) {
         console.log('#makeGroupsPage');
         this.changePage(new makeGroupsView());
-        var shit= document.getElementById("makeGroupsContent");
-        var hammertime = new Hammer(shit);
+        var tempContent= document.getElementById("makeGroupsContent");
+        var hammertime = new Hammer(tempContent);
         hammertime.on('swipeleft', function(ev) {
             console.log("left");
         });
@@ -1886,9 +1886,3 @@ function registerHelper(g, ph, em, u, p, a){
             }*/
         //return;
         }
-
-
-
-
-
-
